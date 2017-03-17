@@ -7,6 +7,10 @@ from RecoHI.HiTracking.hiPixelPairStep_cff import *
 from RecoHI.HiTracking.hiDetachedTripletStep_cff import *
 from RecoHI.HiTracking.hiJetCoreRegionalStep_cff import *
 from RecoHI.HiTracking.MergeTrackCollectionsHI_cff import *
+from RecoHI.HiTracking.hiLowPtQuadStep_cff import *
+from RecoHI.HiTracking.hiHighPtTripletStep_cff import *
+from RecoHI.HiTracking.hiDetachedQuadStep_cff import *
+
 
 from RecoHI.HiMuonAlgos.hiMuonIterativeTk_cff import *
 
@@ -26,9 +30,12 @@ hiTracking_noRegitMu = cms.Sequence(
 hiTracking_noRegitMu_wSplitting = cms.Sequence(
     hiInitialJetCoreClusterSplitting
     *hiBasicTracking
+    *hiLowPtQuadStep#New iteration
+    *hiHighPtTripletStep#New iteration
+    *hiDetachedQuadStep#New iteration
     *hiDetachedTripletStep
     *hiLowPtTripletStep
-    *hiPixelPairStep
+    *hiPixelPairStep #no CA seeding implemented
     )
 
 hiTracking = cms.Sequence(

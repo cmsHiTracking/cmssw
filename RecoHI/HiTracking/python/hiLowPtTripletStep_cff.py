@@ -60,12 +60,31 @@ hiLowPtTripletStepTracksHitDoublets = _hitPairEDProducer.clone(
     maxElement = 0,
     produceIntermediateHitDoublets = True,
 )
+import RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi
 hiLowPtTripletStepTracksHitTriplets = _pixelTripletHLTEDProducer.clone(
     doublets = "hiLowPtTripletStepTracksHitDoublets",
-    maxElement = 5000000,
+    #maxElement = 5000000,
     SeedComparitorPSet = RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi.LowPtClusterShapeSeedComparitor.clone(),
     produceSeedingHitSets = True,
 )
+
+from RecoPixelVertexing.PixelTriplets.caHitTripletEDProducer_cfi import caHitTripletEDProducer as _caHitTripletEDProducer
+hiLowPtTripletStepTracksHitDoubletsCA = hiLowPtTripletStepTracksHitDoublets.clone()
+hiLowPtTripletStepTracksHitDoubletsCA.layerPairs = [0,1]
+
+hiLowPtTripletStepTracksHitTripletsCA = _caHitTripletEDProducer.clone(
+    doublets = "hiLowPtTripletStepTracksHitDoubletsCA",
+    extraHitRPhitolerance = hiLowPtTripletStepTracksHitTriplets.extraHitRPhitolerance,
+    SeedComparitorPSet = hiLowPtTripletStepTracksHitTriplets.SeedComparitorPSet,
+    maxChi2 = dict(
+        pt1    = 0.8, pt2    = 2,
+        value1 = 70 , value2 = 8,
+    ),
+    useBendingCorrection = True,
+    CAThetaCut = 0.002,
+    CAPhiCut = 0.05,
+)
+
 hiLowPtTripletStepPixelTracksFilter = hiFilter.clone(
     nSigmaLipMaxTolerance = 4.0,
     nSigmaTipMaxTolerance = 4.0,
@@ -77,7 +96,8 @@ hiLowPtTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
     passLabel  = cms.string('Pixel primary tracks with vertex constraint'),
 
     # Ordered Hits
-    SeedingHitSets = cms.InputTag("hiLowPtTripletStepTracksHitTriplets"),
+    #SeedingHitSets = cms.InputTag("hiLowPtTripletStepTracksHitTriplets"),
+    SeedingHitSets = cms.InputTag("hiLowPtTripletStepTracksHitTripletsCA"),
 	
     # Fitter
     Fitter = cms.InputTag("pixelFitterByHelixProjections"),
@@ -190,8 +210,8 @@ hiLowPtTripletStepQual = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.tra
 hiLowPtTripletStep = cms.Sequence(hiLowPtTripletStepClusters*
                                         hiLowPtTripletStepSeedLayers*
                                         hiLowPtTripletStepTrackingRegions*
-                                        hiLowPtTripletStepTracksHitDoublets*
-                                        hiLowPtTripletStepTracksHitTriplets*
+                                        hiLowPtTripletStepTracksHitDoubletsCA*
+                                        hiLowPtTripletStepTracksHitTripletsCA*
                                         pixelFitterByHelixProjections*
                                         hiLowPtTripletStepPixelTracksFilter*
                                         hiLowPtTripletStepPixelTracks*hiLowPtTripletStepSeeds*

@@ -60,14 +60,29 @@ hiDetachedTripletStepTracksHitDoublets = _hitPairEDProducer.clone(
     maxElement = 0,
     produceIntermediateHitDoublets = True,
 )
+from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import *
 hiDetachedTripletStepTracksHitTriplets = _pixelTripletHLTEDProducer.clone(
     doublets = "hiDetachedTripletStepTracksHitDoublets",
-    extraHitRPhitolerance = 0.0,
-    extraHitRZtolerance = 0.0,
-    maxElement = 1000000,
-    SeedComparitorPSet = RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi.LowPtClusterShapeSeedComparitor.clone(),
     produceSeedingHitSets = True,
 )
+
+from RecoPixelVertexing.PixelTriplets.caHitTripletEDProducer_cfi import caHitTripletEDProducer as _caHitTripletEDProducer
+hiDetachedTripletStepTracksHitDoubletsCA = hiDetachedTripletStepTracksHitDoublets.clone()
+hiDetachedTripletStepTracksHitDoubletsCA.layerPairs = [0,1]
+
+hiDetachedTripletStepTracksHitTripletsCA = _caHitTripletEDProducer.clone(
+    doublets = "hiDetachedTripletStepTracksHitDoubletsCA",
+    extraHitRPhitolerance = hiDetachedTripletStepTracksHitTriplets.extraHitRPhitolerance,
+    maxChi2 = dict(
+        pt1    = 0.8, pt2    = 2,
+        value1 = 300 , value2 = 10,
+    ),
+    useBendingCorrection = True,
+    CAThetaCut = 0.001,
+    CAPhiCut = 0,
+    CAHardPtCut = 0.2,
+)
+
 hiDetachedTripletStepPixelTracksFilter = hiFilter.clone(
     nSigmaTipMaxTolerance = 0,
     lipMax = 1.0,
@@ -79,7 +94,8 @@ hiDetachedTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
     passLabel  = cms.string('Pixel detached tracks with vertex constraint'),
 
     # Ordered Hits
-    SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTriplets"),
+    #SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTriplets"),
+    SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTripletsCA"),
 	
     # Fitter
     Fitter = cms.InputTag("pixelFitterByHelixProjections"),
@@ -192,8 +208,8 @@ hiDetachedTripletStepQual = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.
 hiDetachedTripletStep = cms.Sequence(hiDetachedTripletStepClusters*
                                      hiDetachedTripletStepSeedLayers*
                                      hiDetachedTripletStepTrackingRegions*
-                                     hiDetachedTripletStepTracksHitDoublets*
-                                     hiDetachedTripletStepTracksHitTriplets*
+                                     hiDetachedTripletStepTracksHitDoubletsCA* # 'CA' can be removed
+                                     hiDetachedTripletStepTracksHitTripletsCA* # 'CA' can be removed
                                      pixelFitterByHelixProjections*
                                      hiDetachedTripletStepPixelTracksFilter*
                                      hiDetachedTripletStepPixelTracks*
