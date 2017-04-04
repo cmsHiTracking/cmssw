@@ -214,8 +214,8 @@ hiLowPtTripletStepQual = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.tra
 hiLowPtTripletStep = cms.Sequence(hiLowPtTripletStepClusters*
                                         hiLowPtTripletStepSeedLayers*
                                         hiLowPtTripletStepTrackingRegions*
-                                        hiLowPtTripletStepTracksHitDoubletsCA*
-                                        hiLowPtTripletStepTracksHitTripletsCA*
+                                        hiLowPtTripletStepTracksHitDoublets*
+                                        hiLowPtTripletStepTracksHitTriplets*
                                         pixelFitterByHelixProjections*
                                         hiLowPtTripletStepPixelTracksFilter*
                                         hiLowPtTripletStepPixelTracks*hiLowPtTripletStepSeeds*
@@ -225,6 +225,6 @@ hiLowPtTripletStep = cms.Sequence(hiLowPtTripletStepClusters*
                                         hiLowPtTripletStepQual
                                         )
 hiLowPtTripletStep_Phase1 = hiLowPtTripletStep.copy()
-hiLowPtTripletStep_Phase1.replace(hiLowPtTripletStepTracksHitDoublets, hiLowPtTripletStepTracksHitDoubletsCA)
-hiLowPtTripletStep_Phase1.replace(hiLowPtTripletStepTracksHitTriplets, hiLowPtTripletStepTracksHitTripletsCA)
+hiLowPtTripletStep_Phase1.replace(hiLowPtTripletStepTracksHitDoublets, hiLowPtTripletStepTracksHitDoubletsCA)# 'CA' can be removed
+hiLowPtTripletStep_Phase1.replace(hiLowPtTripletStepTracksHitTriplets, hiLowPtTripletStepTracksHitTripletsCA)# 'CA' can be removed
 trackingPhase1QuadProp.toReplaceWith(hiLowPtTripletStep, hiLowPtTripletStep_Phase1)
