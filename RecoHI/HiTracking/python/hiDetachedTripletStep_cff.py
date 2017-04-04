@@ -94,8 +94,8 @@ hiDetachedTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
     passLabel  = cms.string('Pixel detached tracks with vertex constraint'),
 
     # Ordered Hits
-    #SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTriplets"),
-    SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTripletsCA"),
+    SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTriplets"),
+    #SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTripletsCA"),
 	
     # Fitter
     Fitter = cms.InputTag("pixelFitterByHelixProjections"),
@@ -105,6 +105,10 @@ hiDetachedTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 	
     # Cleaner
     Cleaner = cms.string("trackCleaner")
+)
+from Configuration.Eras.Modifier_trackingPhase1QuadProp_cff import trackingPhase1QuadProp
+trackingPhase1QuadProp.toModify(hiDetachedTripletStepPixelTracks,
+    SeedingHitSets = cms.InputTag("hiDetachedTripletStepTracksHitTripletsCA")
 )
 
 
@@ -208,8 +212,8 @@ hiDetachedTripletStepQual = RecoTracker.FinalTrackSelectors.trackListMerger_cfi.
 hiDetachedTripletStep = cms.Sequence(hiDetachedTripletStepClusters*
                                      hiDetachedTripletStepSeedLayers*
                                      hiDetachedTripletStepTrackingRegions*
-                                     hiDetachedTripletStepTracksHitDoubletsCA* # 'CA' can be removed
-                                     hiDetachedTripletStepTracksHitTripletsCA* # 'CA' can be removed
+                                     hiDetachedTripletStepTracksHitDoublets* # 'CA' can be removed
+                                     hiDetachedTripletStepTracksHitTriplets* # 'CA' can be removed
                                      pixelFitterByHelixProjections*
                                      hiDetachedTripletStepPixelTracksFilter*
                                      hiDetachedTripletStepPixelTracks*
@@ -218,5 +222,8 @@ hiDetachedTripletStep = cms.Sequence(hiDetachedTripletStepClusters*
                                      hiDetachedTripletStepTracks*
                                      hiDetachedTripletStepSelector*
                                      hiDetachedTripletStepQual)
-
+hiDetachedTripletStep_Phase1 = hiDetachedTripletStep.copy()
+hiDetachedTripletStep_Phase1.replace(hiDetachedTripletStepTracksHitDoublets, hiDetachedTripletStepTracksHitDoubletsCA)
+hiDetachedTripletStep_Phase1.replace(hiDetachedTripletStepTracksHitTriplets, hiDetachedTripletStepTracksHitTripletsCA)
+trackingPhase1QuadProp.toReplaceWith(hiDetachedTripletStep, hiDetachedTripletStep_Phase1)
 

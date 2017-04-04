@@ -30,6 +30,14 @@ hiTracking_noRegitMu = cms.Sequence(
 hiTracking_noRegitMu_wSplitting = cms.Sequence(
     hiInitialJetCoreClusterSplitting
     *hiBasicTracking
+    *hiDetachedTripletStep
+    *hiLowPtTripletStep
+    *hiPixelPairStep
+    )
+
+hiTracking_noRegitMu_wSplitting_Phase1 = cms.Sequence(
+    hiInitialJetCoreClusterSplitting
+    *hiBasicTracking
     *hiLowPtQuadStep#New iteration
     *hiHighPtTripletStep#New iteration
     *hiDetachedQuadStep#New iteration
@@ -46,6 +54,13 @@ hiTracking = cms.Sequence(
 
 hiTracking_wSplitting = cms.Sequence(
     hiTracking_noRegitMu_wSplitting
+    *hiJetCoreRegionalStep 
+    *hiRegitMuTrackingAndSta
+    *hiGeneralTracks
+    )
+
+hiTracking_wSplitting_Phase1 = cms.Sequence(
+    hiTracking_noRegitMu_wSplitting_Phase1
     *hiJetCoreRegionalStep 
     *hiRegitMuTrackingAndSta
     *hiGeneralTracks
