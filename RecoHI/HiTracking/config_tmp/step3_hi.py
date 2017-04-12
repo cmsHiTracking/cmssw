@@ -33,9 +33,9 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-#'file:/afs/cern.ch/user/a/abaty/work/public/2017_Phase1_Tracking_Samples/Feb_20_2017/QCD_80_120_DIGIRAW.root'
+'file:/afs/cern.ch/user/a/abaty/work/public/2017_Phase1_Tracking_Samples/Feb_20_2017/QCD_80_120_DIGIRAW.root'
 #'file:/afs/cern.ch/user/a/abaty/work/public/2017_Phase1_Tracking_Samples/Feb_20_2017/Hydjet_RAW.root'
-'/store/user/abaty/TrackingPhase1_MC/Hydjet_RAW/Baty_2017Phase1TrackingGeom_Hydjet_GEN/Baty_2017Phase1TrackingGeom_Hydjet_RAW/170316_162001/0000/PbPbstep2_DIGI2017_1.root'
+#'/store/user/abaty/TrackingPhase1_MC/Hydjet_RAW/Baty_2017Phase1TrackingGeom_Hydjet_GEN/Baty_2017Phase1TrackingGeom_Hydjet_RAW/170316_162001/0000/PbPbstep2_DIGI2017_1.root'
 ),
     secondaryFileNames = cms.untracked.vstring()
 )
@@ -71,8 +71,11 @@ process.gbrforest = cms.ESSource("PoolDBESSource",CondDBSetup,
 	cms.PSet( record = cms.string('GBRWrapperRcd'),
                   tag= cms.string('GBRForest_HIMVASelectorIter7_v0_offline'),#FIXME HIMVA for detachedQuadStep, whatever iteration it will be called
                   label  = cms.untracked.string('HIMVASelectorIter10')
-                  )
-        
+                  ),
+	cms.PSet( record = cms.string('GBRWrapperRcd'),
+                  tag= cms.string('GBRForest_HIMVASelectorIter7_v0_offline'),#FIXME HIMVA for mixedTripletStep, whatever iterat
+                  label  = cms.untracked.string('HIMVASelectorIter11')
+                  )        
 	),
         connect =cms.string('frontier://FrontierProd/CMS_CONDITIONS')
 )
