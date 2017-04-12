@@ -258,7 +258,7 @@ hiMixedTripletStepTrackCandidates.TrajectoryCleaner = 'hiMixedTripletStepTraject
 # TRACK FITTING
 import RecoTracker.TrackProducer.TrackProducer_cfi
 hiMixedTripletStepTracks = RecoTracker.TrackProducer.TrackProducer_cfi.TrackProducer.clone(
-    AlgorithmName = cms.string('hiMixedTripletStep'),
+    AlgorithmName = cms.string('mixedTripletStep'),
     src = 'hiMixedTripletStepTrackCandidates',
     Fitter = cms.string('FlexibleKFFittingSmoother')
 )
