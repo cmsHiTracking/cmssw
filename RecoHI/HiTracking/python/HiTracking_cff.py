@@ -11,6 +11,8 @@ from RecoHI.HiTracking.hiLowPtQuadStep_cff import *
 from RecoHI.HiTracking.hiHighPtTripletStep_cff import *
 from RecoHI.HiTracking.hiDetachedQuadStep_cff import *
 from RecoHI.HiTracking.hiMixedTripletStep_cff import *
+from RecoHI.HiTracking.hiPixelLessStep_cff import *
+from RecoHI.HiTracking.hiTobTecStep_cff import *
 
 from RecoHI.HiMuonAlgos.hiMuonIterativeTk_cff import *
 
@@ -45,6 +47,8 @@ hiTracking_noRegitMu_wSplitting_Phase1 = cms.Sequence(
     *hiLowPtTripletStep
     *hiPixelPairStep #no CA seeding implemented
     *hiMixedTripletStep #New iteration large impact parameter tracks
+    *hiPixelLessStep #New iteration large impact parameter tracks
+    *hiTobTecStep
     )
 
 hiTracking = cms.Sequence(

@@ -27,7 +27,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
@@ -75,6 +75,14 @@ process.gbrforest = cms.ESSource("PoolDBESSource",CondDBSetup,
 	cms.PSet( record = cms.string('GBRWrapperRcd'),
                   tag= cms.string('GBRForest_HIMVASelectorIter7_v0_offline'),#FIXME HIMVA for mixedTripletStep, whatever iterat
                   label  = cms.untracked.string('HIMVASelectorIter11')
+                  ),
+        cms.PSet( record = cms.string('GBRWrapperRcd'),
+                  tag= cms.string('GBRForest_HIMVASelectorIter7_v0_offline'),#FIXME HIMVA for pixelLessStep, whatever iterat
+                  label  = cms.untracked.string('HIMVASelectorIter12')
+                  ),
+	cms.PSet( record = cms.string('GBRWrapperRcd'),
+                  tag= cms.string('GBRForest_HIMVASelectorIter7_v0_offline'),#FIXME HIMVA for tobTecStep, whatever iterat
+                  label  = cms.untracked.string('HIMVASelectorIter13')
                   )        
 	),
         connect =cms.string('frontier://FrontierProd/CMS_CONDITIONS')
