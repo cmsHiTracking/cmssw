@@ -40,11 +40,17 @@ hiMixedTripletStepClusters = cms.EDProducer("HITrackClusterRemover",
 from RecoLocalTracker.SiStripClusterizer.SiStripClusterChargeCut_cfi import *
 from RecoTracker.IterativeTracking.DetachedTripletStep_cff import detachedTripletStepSeedLayers
 hiMixedTripletStepSeedLayersA = cms.EDProducer("SeedingLayersEDProducer",
-     layerList = cms.vstring('BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg'),
+     #layerList = cms.vstring('BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg'),
 #    layerList = cms.vstring('BPix1+BPix2+BPix3', 
 #        'BPix1+BPix2+FPix1_pos', 'BPix1+BPix2+FPix1_neg', 
 #        'BPix1+FPix1_pos+FPix2_pos', 'BPix1+FPix1_neg+FPix2_neg', 
 #        'BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg'),
+    layerList = cms.vstring('BPix1+BPix2+FPix1_pos', 'BPix1+BPix2+FPix1_neg',#to be studied
+        'BPix1+FPix1_pos+FPix2_pos', 'BPix1+FPix1_neg+FPix2_neg',
+        'FPix1_pos+FPix2_pos+FPix3_pos', 'FPix1_neg+FPix2_neg+FPix3_neg',
+        'BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg',
+        'BPix1+FPix1_pos+FPix3_pos', 'BPix1+FPix1_neg+FPix3_neg',
+        'FPix2_pos+FPix3_pos+TEC1_pos', 'FPix2_neg+FPix3_neg+TEC1_neg'),
     BPix = cms.PSet(
         TTRHBuilder = cms.string('WithTrackAngle'),
         HitProducer = cms.string('siPixelRecHits'),
@@ -136,7 +142,7 @@ hiMixedTripletStepSeedsA = _seedCreatorFromRegionConsecutiveHitsTripletOnlyEDPro
 
 # SEEDING LAYERS
 hiMixedTripletStepSeedLayersB = cms.EDProducer("SeedingLayersEDProducer",
-    layerList = cms.vstring('BPix2+BPix3+TIB1'),
+    layerList = cms.vstring('BPix3+BPix4+TIB1'),
     BPix = cms.PSet(
         TTRHBuilder = cms.string('WithTrackAngle'),
         HitProducer = cms.string('siPixelRecHits'),
