@@ -59,7 +59,15 @@ from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi im
 hiTobTecStepTrackingRegionsTripl = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
     ptMin = 0.55,
     originHalfLength = 20.0,
-    originRadius = 3.5
+    originRadius = 3.5,
+    originRScaling4BigEvts = cms.bool(True),
+    halfLengthScaling4BigEvts = cms.bool(True),
+    ptMinScaling4BigEvts = cms.bool(True),
+    minOriginR = 0,
+    minHalfLength = 20,
+    maxPtMin = 5,
+    scalingStartNPix = 20000,
+    scalingEndNPix = 35000
 ))
 
 # Triplet seeding

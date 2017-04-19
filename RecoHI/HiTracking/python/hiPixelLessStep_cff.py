@@ -98,34 +98,21 @@ hiPixelLessStepSeedLayers = cms.EDProducer("SeedingLayersEDProducer",
         maxRing = cms.int32(3)
     )
 )
-from Configuration.Eras.Modifier_trackingLowPU_cff import trackingLowPU
-trackingLowPU.toModify(hiPixelLessStepSeedLayers,
-    layerList = [
-        'TIB1+TIB2',
-        'TID1_pos+TID2_pos','TID2_pos+TID3_pos',
-        'TEC1_pos+TEC2_pos','TEC2_pos+TEC3_pos','TEC3_pos+TEC4_pos','TEC3_pos+TEC5_pos','TEC4_pos+TEC5_pos',
-        'TID1_neg+TID2_neg','TID2_neg+TID3_neg',
-        'TEC1_neg+TEC2_neg','TEC2_neg+TEC3_neg','TEC3_neg+TEC4_neg','TEC3_neg+TEC5_neg','TEC4_neg+TEC5_neg'
-    ],
-    TIB = dict(clusterChargeCut = dict(refToPSet_ = 'SiStripClusterChargeCutTiny')),
-    TID = dict(clusterChargeCut = dict(refToPSet_ = 'SiStripClusterChargeCutTiny')),
-    TEC = dict(clusterChargeCut = dict(refToPSet_ = 'SiStripClusterChargeCutTiny')),
-    MTIB = None,
-    MTID = None,
-    MTEC = None,
-)
 
 # TrackingRegion
 from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi import globalTrackingRegionFromBeamSpotFixedZ as _globalTrackingRegionFromBeamSpotFixedZ
 hiPixelLessStepTrackingRegions = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
     ptMin = 0.4,
     originHalfLength = 12.0,
-    originRadius = 1.0
-))
-trackingLowPU.toModify(hiPixelLessStepTrackingRegions, RegionPSet = dict(
-    ptMin = 0.7,
-    originHalfLength = 10.0,
-    originRadius = 2.0,
+    originRadius = 1.0,
+    originRScaling4BigEvts = cms.bool(True),
+    halfLengthScaling4BigEvts = cms.bool(True),
+    ptMinScaling4BigEvts = cms.bool(True),
+    minOriginR = 0,
+    minHalfLength = 12,
+    maxPtMin = 5,
+    scalingStartNPix = 20000,
+    scalingEndNPix = 35000
 ))
 
 
@@ -169,18 +156,6 @@ hiPixelLessStepSeeds = _seedCreatorFromRegionConsecutiveHitsTripletOnlyEDProduce
         )
     )
 )
-trackingLowPU.toModify(hiPixelLessStepHitDoublets, produceSeedingHitSets=True, produceIntermediateHitDoublets=False)
-trackingLowPU.toModify(hiPixelLessStepSeeds,
-    seedingHitSets = "hiPixelLessStepHitDoublets",
-    SeedComparitorPSet = dict(# FIXME: is this defined in any cfi that could be imported instead of copy-paste?
-        ComponentName = 'PixelClusterShapeSeedComparitor',
-        FilterAtHelixStage = cms.bool(True),
-        FilterPixelHits = cms.bool(False),
-        FilterStripHits = cms.bool(True),
-        ClusterShapeHitFilterName = cms.string('ClusterShapeHitFilter'),
-        ClusterShapeCacheSrc = cms.InputTag("siPixelClusterShapeCache") # not really needed here since FilterPixelHits=False
-    )
-)
 
 
 # QUALITY CUTS DURING TRACK BUILDING
@@ -193,7 +168,6 @@ _hiPixelLessStepTrajectoryFilterBase = TrackingTools.TrajectoryFiltering.Traject
 hiPixelLessStepTrajectoryFilter = _hiPixelLessStepTrajectoryFilterBase.clone(
     seedPairPenalty = 1,
 )
-trackingLowPU.toReplaceWith(hiPixelLessStepTrajectoryFilter, _hiPixelLessStepTrajectoryFilterBase)
 
 import RecoTracker.MeasurementDet.Chi2ChargeMeasurementEstimator_cfi
 hiPixelLessStepChi2Est = RecoTracker.MeasurementDet.Chi2ChargeMeasurementEstimator_cfi.Chi2ChargeMeasurementEstimator.clone(
@@ -201,9 +175,6 @@ hiPixelLessStepChi2Est = RecoTracker.MeasurementDet.Chi2ChargeMeasurementEstimat
     nSigma = cms.double(3.0),
     MaxChi2 = cms.double(16.0),
     clusterChargeCut = cms.PSet(refToPSet_ = cms.string('SiStripClusterChargeCutTight'))
-)
-trackingLowPU.toModify(hiPixelLessStepChi2Est,
-    clusterChargeCut = dict(refToPSet_ = 'SiStripClusterChargeCutTiny')
 )
 
 # TRACK BUILDING
@@ -237,7 +208,6 @@ hiPixelLessStepTrajectoryCleanerBySharedHits = trajectoryCleanerBySharedHits.clo
     allowSharedFirstHit = cms.bool(True)
     )
 hiPixelLessStepTrackCandidates.TrajectoryCleaner = 'hiPixelLessStepTrajectoryCleanerBySharedHits'
-trackingLowPU.toModify(hiPixelLessStepTrajectoryCleanerBySharedHits, fractionShared = 0.19)
 
 
 # TRACK FITTING

@@ -73,14 +73,22 @@ hiMixedTripletStepSeedLayersA = cms.EDProducer("SeedingLayersEDProducer",
 
 
 # TrackingRegion
-# from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi import globalTrackingRegionFromBeamSpotFixedZ as _globalTrackingRegionFromBeamSpotFixedZ
-# mixedTripletStepTrackingRegionsA = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
-#     ptMin = 0.4,
-#     originHalfLength = 15.0,
-#     originRadius = 1.5
-# ))
+from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi import globalTrackingRegionFromBeamSpotFixedZ as _globalTrackingRegionFromBeamSpotFixedZ
+hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
+     ptMin = 0.4,
+     originHalfLength = 15.0,
+     originRadius = 1.5,
+     originRScaling4BigEvts = cms.bool(True),
+     halfLengthScaling4BigEvts = cms.bool(True),
+     ptMinScaling4BigEvts = cms.bool(True),
+     minOriginR = 0.1,
+     minHalfLength = 15,
+     maxPtMin = 5,
+     scalingStartNPix = 20000,
+     scalingEndNPix = 35000
+ ))
 
-from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
+#from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
 from RecoTracker.TkHitPairs.hitPairEDProducer_cfi import hitPairEDProducer as _hitPairEDProducer
 from RecoPixelVertexing.PixelTriplets.pixelTripletHLTEDProducer_cfi import pixelTripletHLTEDProducer as _pixelTripletHLTEDProducer
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import *
@@ -89,21 +97,21 @@ from RecoPixelVertexing.PixelTrackFitting.pixelFitterByHelixProjections_cfi impo
 from RecoHI.HiTracking.HIPixelTrackFilter_cff import *
 from RecoHI.HiTracking.HITrackingRegionProducer_cfi import *
 
-hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
-    precise = True,
-    useMultipleScattering = False,
-    useFakeVertices       = False,
-    beamSpot = "offlineBeamSpot",
-    useFixedError = True,
-    nSigmaZ = 4.0,
-    sigmaZVertex = 4.0,
-    fixedError = 0.5,
-    VertexCollection = "hiSelectedVertex",
-    ptMin = 0.8,#0.4
-    useFoundVertices = True,
+#hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
+#    precise = True,
+#    useMultipleScattering = False,
+#    useFakeVertices       = False,
+#    beamSpot = "offlineBeamSpot",
+#    useFixedError = True,
+#    nSigmaZ = 4.0,
+#    sigmaZVertex = 4.0,
+#    fixedError = 0.5,
+#    VertexCollection = "hiSelectedVertex",
+#    ptMin = 0.8,#0.4
+#    useFoundVertices = True,
     #originHalfLength = 15.0,
-    originRadius = 1.5#1.5
-))
+#    originRadius = 1.5#1.5
+#))
 
 # seeding
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import ClusterShapeHitFilterESProducer as _ClusterShapeHitFilterESProducer
@@ -155,22 +163,37 @@ hiMixedTripletStepSeedLayersB = cms.EDProducer("SeedingLayersEDProducer",
     )
 )
 
+hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
+     ptMin = 0.4,
+     originHalfLength = 15.0,
+     originRadius = 1.0,
+     originRScaling4BigEvts = True,
+     halfLengthScaling4BigEvts = True,
+     ptMinScaling4BigEvts = True,
+     minOriginR = 0,
+     minHalfLength = 15,
+     maxPtMin = 5,
+     scalingStartNPix = 20000,
+     scalingEndNPix = 35000
+ )) 
+
+
 # TrackingRegion
-hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
-    precise = True,
-    useMultipleScattering = False,
-    useFakeVertices       = False,
-    beamSpot = "offlineBeamSpot",
-    useFixedError = True,
-    nSigmaZ = 4.0,
-    sigmaZVertex = 4.0,
-    fixedError = 0.5,
-    VertexCollection = "hiSelectedVertex",
-    ptMin = 0.8,#0.4
-    useFoundVertices = True,
+#hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
+#    precise = True,
+#    useMultipleScattering = False,
+#    useFakeVertices       = False,
+#    beamSpot = "offlineBeamSpot",
+#    useFixedError = True,
+#    nSigmaZ = 4.0,
+#    sigmaZVertex = 4.0,
+#    fixedError = 0.5,
+#    VertexCollection = "hiSelectedVertex",
+#    ptMin = 0.8,#0.4
+#    useFoundVertices = True,
     #originHalfLength = 15.0,
-    originRadius = 1.5#1.5
-))
+#    originRadius = 1.5#1.5
+#))
 
 
 # seeding
