@@ -144,8 +144,12 @@ public:
         std::cout << "NumberOfPixels: " <<  nPix << std::endl;
         std::cout << "Scaled Origin R: " << scaledOriginRadius << " Default Origin R: " << theOriginRadius <<" Scaled HalfLength: " << scaledHalfLength << " Default H.L.: " << theOriginHalfLength <<" Scaled pT Min: " << scaledPtMin << " Default pT Min: " << thePtMin << std::endl;
         //otherwise use the unscaled radius
-        result.push_back( std::make_unique<GlobalTrackingRegion>(
+        if(scaledOriginRadius!=0 && scaledHalfLength !=0){
+          //if region should have 0 size, return 'result' empty, otherwise make a tracking region 
+          //(prevents making some tracks even with R=0 due to stat uncert on seed propagation)
+          result.push_back( std::make_unique<GlobalTrackingRegion>(
             scaledPtMin, origin, scaledOriginRadius, std::max(theNSigmaZ*bs.sigmaZ(), scaledHalfLength), thePrecise,theUseMS));
+        }
       }//end of linear scaling code
       else{
         result.push_back( std::make_unique<GlobalTrackingRegion>(
