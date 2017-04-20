@@ -142,6 +142,14 @@ hiTobTecStepTrackingRegionsPair = _globalTrackingRegionFromBeamSpotFixedZ.clone(
     ptMin = 0.6,
     originHalfLength = 30.0,
     originRadius = 6.0,
+    originRScaling4BigEvts = cms.bool(True),
+    halfLengthScaling4BigEvts = cms.bool(True),
+    ptMinScaling4BigEvts = cms.bool(True),
+    minOriginR = 0,
+    minHalfLength = 20,
+    maxPtMin = 5,
+    scalingStartNPix = 20000,
+    scalingEndNPix = 35000
 ))
 
 # Pair seeds
