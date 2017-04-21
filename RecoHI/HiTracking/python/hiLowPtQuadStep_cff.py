@@ -42,7 +42,7 @@ hiLowPtQuadStepTrackingRegions = _globalTrackingRegionWithVertices.clone(RegionP
     useMultipleScattering = False,
     useFakeVertices       = False,
     beamSpot = "offlineBeamSpot",
-    useFixedError = True,
+    useFixedError = False,
     nSigmaZ = 4.0,
     sigmaZVertex = 4.0,
     fixedError = 0.5,
@@ -150,8 +150,8 @@ hiLowPtQuadStepSeeds = RecoPixelVertexing.PixelLowPtUtilities.TrackSeeds_cfi.pix
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiLowPtQuadStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     #maxLostHits = 1,
-    minimumNumberOfHits = 3,#3 for pp
-    minPt = cms.double(0.075),# 0.075 for pp
+    minimumNumberOfHits = 4,#3 for pp
+    minPt = cms.double(0.3),# 0.075 for pp
     #constantValueForLostHitsFractionFilter = cms.double(0.701)
     )
 
