@@ -114,12 +114,12 @@ hiPixelLessStepTrackingRegions = _globalTrackingRegionWithVertices.clone(RegionP
      originRadius = 1.0,
      originRScaling4BigEvts = cms.bool(True),
      halfLengthScaling4BigEvts = cms.bool(True),
-     ptMinScaling4BigEvts = cms.bool(False),
+     ptMinScaling4BigEvts = cms.bool(True),
      minOriginR = 0,
      minHalfLength = 0,
-     maxPtMin = 5,
-     scalingStartNPix = 15000,
-     scalingEndNPix = 40000     
+     maxPtMin = 0.7,
+     scalingStartNPix = 20000,
+     scalingEndNPix = 35000     
 ))
 
 
