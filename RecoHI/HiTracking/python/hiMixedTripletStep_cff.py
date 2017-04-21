@@ -73,20 +73,27 @@ hiMixedTripletStepSeedLayersA = cms.EDProducer("SeedingLayersEDProducer",
 
 
 # TrackingRegion
-from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi import globalTrackingRegionFromBeamSpotFixedZ as _globalTrackingRegionFromBeamSpotFixedZ
-hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
+from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
+hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
+     precise = True,
+     useMultipleScattering = False,
+     beamSpot = "offlineBeamSpot",
+     useFoundVertices = True,
+     useFakeVertices       = False,
+     VertexCollection = "hiSelectedVertex",
+     useFixedError = True,
+     fixedError = 15.0,
      ptMin = 0.4,
-     originHalfLength = 15.0,
      originRadius = 1.5,
      originRScaling4BigEvts = cms.bool(True),
      halfLengthScaling4BigEvts = cms.bool(True),
-     ptMinScaling4BigEvts = cms.bool(True),
+     ptMinScaling4BigEvts = cms.bool(False),
      minOriginR = 0,
-     minHalfLength = 15,
+     minHalfLength = 0,
      maxPtMin = 5,
-     scalingStartNPix = 20000,
-     scalingEndNPix = 35000
- ))
+     scalingStartNPix = 15000,
+     scalingEndNPix = 40000     
+))
 
 #from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
 from RecoTracker.TkHitPairs.hitPairEDProducer_cfi import hitPairEDProducer as _hitPairEDProducer
@@ -97,21 +104,6 @@ from RecoPixelVertexing.PixelTrackFitting.pixelFitterByHelixProjections_cfi impo
 from RecoHI.HiTracking.HIPixelTrackFilter_cff import *
 from RecoHI.HiTracking.HITrackingRegionProducer_cfi import *
 
-#hiMixedTripletStepTrackingRegionsA = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
-#    precise = True,
-#    useMultipleScattering = False,
-#    useFakeVertices       = False,
-#    beamSpot = "offlineBeamSpot",
-#    useFixedError = True,
-#    nSigmaZ = 4.0,
-#    sigmaZVertex = 4.0,
-#    fixedError = 0.5,
-#    VertexCollection = "hiSelectedVertex",
-#    ptMin = 0.8,#0.4
-#    useFoundVertices = True,
-    #originHalfLength = 15.0,
-#    originRadius = 1.5#1.5
-#))
 
 # seeding
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import ClusterShapeHitFilterESProducer as _ClusterShapeHitFilterESProducer
@@ -163,37 +155,26 @@ hiMixedTripletStepSeedLayersB = cms.EDProducer("SeedingLayersEDProducer",
     )
 )
 
-hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
+hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
+     precise = True,
+     useMultipleScattering = False,
+     beamSpot = "offlineBeamSpot",
+     useFoundVertices = True,
+     useFakeVertices       = False,
+     VertexCollection = "hiSelectedVertex",
+     useFixedError = True,
+     fixedError = 15.0,
      ptMin = 0.4,
-     originHalfLength = 15.0,
      originRadius = 1.0,
-     originRScaling4BigEvts = True,
-     halfLengthScaling4BigEvts = True,
-     ptMinScaling4BigEvts = True,
+     originRScaling4BigEvts = cms.bool(True),
+     halfLengthScaling4BigEvts = cms.bool(True),
+     ptMinScaling4BigEvts = cms.bool(False),
      minOriginR = 0,
-     minHalfLength = 15,
+     minHalfLength = 0,
      maxPtMin = 5,
-     scalingStartNPix = 20000,
-     scalingEndNPix = 35000
- )) 
-
-
-# TrackingRegion
-#hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
-#    precise = True,
-#    useMultipleScattering = False,
-#    useFakeVertices       = False,
-#    beamSpot = "offlineBeamSpot",
-#    useFixedError = True,
-#    nSigmaZ = 4.0,
-#    sigmaZVertex = 4.0,
-#    fixedError = 0.5,
-#    VertexCollection = "hiSelectedVertex",
-#    ptMin = 0.8,#0.4
-#    useFoundVertices = True,
-    #originHalfLength = 15.0,
-#    originRadius = 1.5#1.5
-#))
+     scalingStartNPix = 15000,
+     scalingEndNPix = 40000     
+))
 
 
 # seeding
@@ -215,8 +196,8 @@ hiMixedTripletStepSeeds.seedCollections = cms.VInputTag(
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 _hiMixedTripletStepTrajectoryFilterBase = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
 #    maxLostHits = 0,
-    minimumNumberOfHits = 3,
-    minPt = 0.1
+    minimumNumberOfHits = 5,
+    minPt = 0.4
 )
 hiMixedTripletStepTrajectoryFilter = _hiMixedTripletStepTrajectoryFilterBase.clone(
     constantValueForLostHitsFractionFilter = 1.4,
@@ -228,14 +209,14 @@ import TrackingTools.MaterialEffects.MaterialPropagator_cfi
 hiMixedTripletStepPropagator = TrackingTools.MaterialEffects.MaterialPropagator_cfi.MaterialPropagator.clone(
 #hiMixedTripletStepPropagator = TrackingTools.MaterialEffects.MaterialPropagatorParabolicMf_cff.MaterialPropagatorParabolicMF.clone(
     ComponentName = 'hiMixedTripletStepPropagator',
-    ptMin = 0.1
+    ptMin = 0.4
     )
 
 import TrackingTools.MaterialEffects.OppositeMaterialPropagator_cfi
 hiMixedTripletStepPropagatorOpposite = TrackingTools.MaterialEffects.OppositeMaterialPropagator_cfi.OppositeMaterialPropagator.clone(
 #hiMixedTripletStepPropagatorOpposite = TrackingTools.MaterialEffects.MaterialPropagatorParabolicMf_cff.OppositeMaterialPropagatorParabolicMF.clone(
     ComponentName = 'hiMixedTripletStepPropagatorOpposite',
-    ptMin = 0.1
+    ptMin = 0.4
     )
 
 import RecoTracker.MeasurementDet.Chi2ChargeMeasurementEstimator_cfi

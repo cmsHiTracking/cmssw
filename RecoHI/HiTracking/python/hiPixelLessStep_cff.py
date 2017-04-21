@@ -100,19 +100,26 @@ hiPixelLessStepSeedLayers = cms.EDProducer("SeedingLayersEDProducer",
 )
 
 # TrackingRegion
-from RecoTracker.TkTrackingRegions.globalTrackingRegionFromBeamSpotFixedZ_cfi import globalTrackingRegionFromBeamSpotFixedZ as _globalTrackingRegionFromBeamSpotFixedZ
-hiPixelLessStepTrackingRegions = _globalTrackingRegionFromBeamSpotFixedZ.clone(RegionPSet = dict(
-    ptMin = 0.4,
-    originHalfLength = 12.0,
-    originRadius = 1.0,
-    originRScaling4BigEvts = cms.bool(True),
-    halfLengthScaling4BigEvts = cms.bool(True),
-    ptMinScaling4BigEvts = cms.bool(True),
-    minOriginR = 0,
-    minHalfLength = 12,
-    maxPtMin = 5,
-    scalingStartNPix = 20000,
-    scalingEndNPix = 35000
+from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
+hiPixelLessStepTrackingRegions = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
+     precise = True,
+     useMultipleScattering = False,
+     beamSpot = "offlineBeamSpot",
+     useFoundVertices = True,
+     useFakeVertices       = False,
+     VertexCollection = "hiSelectedVertex",
+     useFixedError = True,
+     fixedError = 12.0,
+     ptMin = 0.4,
+     originRadius = 1.0,
+     originRScaling4BigEvts = cms.bool(True),
+     halfLengthScaling4BigEvts = cms.bool(True),
+     ptMinScaling4BigEvts = cms.bool(False),
+     minOriginR = 0,
+     minHalfLength = 0,
+     maxPtMin = 5,
+     scalingStartNPix = 15000,
+     scalingEndNPix = 40000     
 ))
 
 
@@ -162,8 +169,8 @@ hiPixelLessStepSeeds = _seedCreatorFromRegionConsecutiveHitsTripletOnlyEDProduce
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 _hiPixelLessStepTrajectoryFilterBase = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     maxLostHits = 0,
-    minimumNumberOfHits = 4,
-    minPt = 0.1
+    minimumNumberOfHits = 5,
+    minPt = 0.4
     )
 hiPixelLessStepTrajectoryFilter = _hiPixelLessStepTrajectoryFilterBase.clone(
     seedPairPenalty = 1,

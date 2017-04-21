@@ -13,7 +13,15 @@ RegionPSetWithVerticesBlock = cms.PSet(
         ptMin = cms.double(0.9),
         useFoundVertices = cms.bool(True),
         useFakeVertices = cms.bool(False),
-        nSigmaZ = cms.double(4.0)
+        nSigmaZ = cms.double(4.0),
+        originRScaling4BigEvts = cms.bool(False),
+        minOriginR = cms.double(0),
+        ptMinScaling4BigEvts = cms.bool(False),
+        maxPtMin = cms.double(1000),
+        halfLengthScaling4BigEvts = cms.bool(False),
+        minHalfLength = cms.double(0),
+        scalingStartNPix = cms.double(20000),
+        scalingEndNPix = cms.double(35000)
     )
 )
 from Configuration.Eras.Modifier_trackingLowPU_cff import trackingLowPU
