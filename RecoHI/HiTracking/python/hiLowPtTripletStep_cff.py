@@ -49,7 +49,7 @@ hiLowPtTripletStepTrackingRegions = _globalTrackingRegionWithVertices.clone(Regi
     sigmaZVertex = 4.0,
     fixedError = 0.2,
     VertexCollection = "hiSelectedVertex",
-    ptMin = 0.4,
+    ptMin = 0.1,
     useFoundVertices = True,
     originRadius = 0.02
 ))
@@ -89,7 +89,7 @@ hiLowPtTripletStepPixelTracksFilter = hiFilter.clone(
     nSigmaLipMaxTolerance = 4.0,
     nSigmaTipMaxTolerance = 4.0,
     lipMax = 0,
-    ptMin = 0.4,
+    ptMin = 0.1,
 )
 hiLowPtTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 
@@ -124,7 +124,7 @@ hiLowPtTripletStepSeeds = RecoPixelVertexing.PixelLowPtUtilities.TrackSeeds_cfi.
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiLowPtTripletStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     maxLostHits = 1,
-    minimumNumberOfHits = 6,
+    minimumNumberOfHits = 4,
     minPt = 0.4
     )
 
@@ -181,7 +181,8 @@ hiLowPtTripletStepSelector = RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiMultiT
     trackSelectors= cms.VPSet(
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiLooseMTS.clone(
     name = 'hiLowPtTripletStepLoose',
-    useMVA = cms.bool(False)
+    useMVA = cms.bool(False),
+    min_nhits = cms.uint32(4),
     ), #end of pset
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiTightMTS.clone(
     name = 'hiLowPtTripletStepTight',

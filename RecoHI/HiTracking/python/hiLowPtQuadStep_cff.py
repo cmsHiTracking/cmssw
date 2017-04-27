@@ -47,7 +47,7 @@ hiLowPtQuadStepTrackingRegions = _globalTrackingRegionWithVertices.clone(RegionP
     sigmaZVertex = 4.0,
     fixedError = 0.5,
     VertexCollection = "hiSelectedVertex",
-    ptMin = 0.3,#0.2 for pp
+    ptMin = 0.1,#0.2 for pp
     useFoundVertices = True,
     originRadius = 0.02 #0.02 for pp
 ))
@@ -120,8 +120,10 @@ hiLowPtQuadStepPixelTracksFilter = hiFilter.clone(
     nSigmaTipMaxTolerance = 0,
     lipMax = 1.0,
     tipMax = 1.0,
-    ptMin = 0.4, #seeding region is 0.3
+    ptMin = 0.1, #seeding region is 0.3
 )
+
+
 hiLowPtQuadStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 
     passLabel  = cms.string('Pixel detached tracks with vertex constraint'),
@@ -132,7 +134,7 @@ hiLowPtQuadStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 	
     # Fitter
     Fitter = cms.InputTag("pixelFitterByHelixProjections"),
-	
+    
     # Filter
     Filter = cms.InputTag("hiLowPtQuadStepPixelTracksFilter"),
 	
@@ -215,13 +217,14 @@ hiLowPtQuadStepSelector = RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiMultiTrac
     name = 'hiLowPtQuadStepLoose',
     applyAdaptedPVCuts = cms.bool(False),
     useMVA = cms.bool(False),
+    min_nhits = cms.uint32(4),
     ), #end of pset
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiTightMTS.clone(
     name = 'hiLowPtQuadStepTight',
     preFilterName = 'hiLowPtQuadStepLoose',
     applyAdaptedPVCuts = cms.bool(False),
     useMVA = cms.bool(False),
-    minMVA = cms.double(-0.2)
+    minMVA = cms.double(-0.2),
     ),
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiHighpurityMTS.clone(
     name = 'hiLowPtQuadStep',
