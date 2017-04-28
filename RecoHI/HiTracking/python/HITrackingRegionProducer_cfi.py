@@ -3,8 +3,8 @@ import FWCore.ParameterSet.Config as cms
 # global tracking region for primary pixel tracks
 from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
 hiTrackingRegionWithVertex = _globalTrackingRegionWithVertices.clone(RegionPSet = dict(
-    ptMin         = cms.double(1.5),	  
-    originRadius  = cms.double(0.2),
+    ptMin         = cms.double(0.9),	  
+    originRadius  = cms.double(0.1),
     nSigmaZ       = cms.double(3.0),		
     beamSpot      = cms.InputTag("offlineBeamSpot"),
     precise       = cms.bool(True),		

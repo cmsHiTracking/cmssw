@@ -8,7 +8,7 @@ OppositeMaterialPropagator.Mass = 0.139
 #trajectory filter settings
 from TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff import *
 CkfBaseTrajectoryFilter_block.minimumNumberOfHits = 6 #default is 5
-CkfBaseTrajectoryFilter_block.minPt = 2.0 #default is 0.9
+CkfBaseTrajectoryFilter_block.minPt = 0.9 #default is 0.9
 
 # trajectory builder settings
 CkfTrajectoryBuilder.maxCand = 5 #default is 5
