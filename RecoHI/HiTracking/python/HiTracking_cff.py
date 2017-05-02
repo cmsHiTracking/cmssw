@@ -69,8 +69,7 @@ hiTracking_wSplitting_Phase1 = cms.Sequence(
     *hiJetCoreRegionalStep 
     *hiRegitMuTrackingAndSta
     *hiGeneralTracks
-    *hiOfflinePrimaryVertices
-
+    *bestFinalHiVertex
     )
 
 hiTracking_wConformalPixel = cms.Sequence(
