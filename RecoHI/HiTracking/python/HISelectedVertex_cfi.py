@@ -7,17 +7,17 @@ hiBestAdaptiveVertex = cms.EDFilter("HIBestVertexSelection",
 )
 
 # select best of precise vertex, fast vertex, and beamspot
-hiSelectedVertex = cms.EDProducer("HIBestVertexProducer",
+hiSelectedPixelVertex = cms.EDProducer("HIBestVertexProducer",
     beamSpotLabel = cms.InputTag("offlineBeamSpot"),
     adaptiveVertexCollection = cms.InputTag("hiBestAdaptiveVertex"),
     medianVertexCollection = cms.InputTag("hiPixelMedianVertex")
 )
 
 # best vertex sequence
-bestHiVertex = cms.Sequence( hiBestAdaptiveVertex * hiSelectedVertex ) # vertexing run BEFORE tracking
+bestHiVertex = cms.Sequence( hiBestAdaptiveVertex * hiSelectedPixelVertex ) # vertexing run BEFORE tracking
 
 from RecoHI.HiTracking.HIPixelAdaptiveVertex_cfi import *
-hiFinalPrimaryVertices=hiPixelAdaptiveVertex.clone( # vertexing run AFTER tracking
+hiOfflinePrimaryVertices=hiPixelAdaptiveVertex.clone( # vertexing run AFTER tracking
     TrackLabel = cms.InputTag("hiGeneralTracks"),
                                        
     TkFilterParameters = cms.PSet(
@@ -31,16 +31,16 @@ hiFinalPrimaryVertices=hiPixelAdaptiveVertex.clone( # vertexing run AFTER tracki
         numTracksThreshold = cms.int32(2)
     )
 )
-hiBestFinalVertex = cms.EDFilter("HIBestVertexSelection",
-    src = cms.InputTag("hiFinalPrimaryVertices"),
+hiBestOfflinePrimaryVertex = cms.EDFilter("HIBestVertexSelection",
+    src = cms.InputTag("hiOfflinePrimaryVertices"),
     maxNumber = cms.uint32(1)
 )
 # select best of precise vertex, fast vertex, and beamspot
-hiFinalSelectedVertex = cms.EDProducer("HIBestVertexProducer",
+hiSelectedVertex = cms.EDProducer("HIBestVertexProducer",
     beamSpotLabel = cms.InputTag("offlineBeamSpot"),
     medianVertexCollection = cms.InputTag("hiPixelMedianVertex"),
     adaptiveVertexCollection = cms.InputTag("hiBestAdaptiveVertex"),
     useFinalAdapativeVertexCollection = cms.bool(True),
-    finalAdaptiveVertexCollection = cms.InputTag("hiBestFinalVertex")
+    finalAdaptiveVertexCollection = cms.InputTag("hiBestOfflinePrimaryVertex")
 )
-bestFinalHiVertex = cms.Sequence(hiFinalPrimaryVertices * hiBestFinalVertex * hiFinalSelectedVertex ) # vertexing run BEFORE tracking
+bestFinalHiVertex = cms.Sequence(hiOfflinePrimaryVertices * hiBestOfflinePrimaryVertex * hiSelectedVertex ) # vertexing run BEFORE tracking
