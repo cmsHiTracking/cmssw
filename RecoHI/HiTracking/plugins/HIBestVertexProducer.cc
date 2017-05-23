@@ -65,7 +65,7 @@ void HIBestVertexProducer::produce
       LogError("HeavyIonVertexing") << "final adaptive vertex collection is empty!" << endl;
   
     //if using final vertex and has a good vertex and it has more tracks than pixel track adaptive vertex, use it
-    if(vertices0->begin()->zError()<3 && (vertices0->begin()->nTracks()>=vertices1->begin()->nTracks() || vertices1->begin()->zError()>=3)){
+    if(vertices0->begin()->zError()<3){
       hasFinalVertex = true;
       reco::VertexCollection::const_iterator vertex0 = vertices0->begin();
       newVertexCollection->push_back(*vertex0);
