@@ -110,8 +110,8 @@ hiDetachedQuadStepSeeds = RecoPixelVertexing.PixelLowPtUtilities.TrackSeeds_cfi.
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiDetachedQuadStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     #maxLostHits = 1,
-    minimumNumberOfHits = 3,#3 for pp
-    minPt = cms.double(0.075),# 0.075 for pp
+    minimumNumberOfHits = 4,#3 for pp
+    minPt = cms.double(0.3),# 0.075 for pp
     #constantValueForLostHitsFractionFilter = cms.double(0.701)
     )
 

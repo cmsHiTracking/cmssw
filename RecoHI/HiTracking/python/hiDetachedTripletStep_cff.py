@@ -125,7 +125,7 @@ import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiDetachedTripletStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     maxLostHits = 1,
     minimumNumberOfHits = 6,
-    minPt = cms.double(0.3),
+    minPt = cms.double(0.7),
     constantValueForLostHitsFractionFilter = cms.double(0.701)
     )
 
