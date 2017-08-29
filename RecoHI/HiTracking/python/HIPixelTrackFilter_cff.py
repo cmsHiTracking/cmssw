@@ -6,7 +6,9 @@ clusterFilter = _clusterShapeTrackFilter.clone(
 )
 
 from RecoHI.HiTracking.hiPixelTrackFilter_cfi import hiPixelTrackFilter as _hiPixelTrackFilter
-hiFilter = _hiPixelTrackFilter.clone()
+hiFilter = _hiPixelTrackFilter.clone(
+    ptMin = 0.9
+)
 
 from RecoPixelVertexing.PixelTrackFitting.pixelTrackFilterByKinematics_cfi import pixelTrackFilterByKinematics as _pixelTrackFilterByKinematics
 kinematicFilter = _pixelTrackFilterByKinematics.clone(

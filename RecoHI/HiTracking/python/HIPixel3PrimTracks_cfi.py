@@ -52,7 +52,7 @@ hiPixel3PrimTracksHitQuadrupletsCA = _caHitQuadrupletEDProducer.clone(
     useBendingCorrection = True,
     fitFastCircle = True,
     fitFastCircleChi2Cut = True,
-    CAThetaCut = 0.0012,
+    CAThetaCut = 0.0016,
     CAPhiCut = 0.2,
 ) 
 

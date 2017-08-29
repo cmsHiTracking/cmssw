@@ -35,7 +35,7 @@ from RecoPixelVertexing.PixelTriplets.pixelTripletHLTEDProducer_cfi import pixel
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import *
 import RecoPixelVertexing.PixelLowPtUtilities.LowPtClusterShapeSeedComparitor_cfi
 from RecoPixelVertexing.PixelLowPtUtilities.trackCleaner_cfi import *
-from RecoPixelVertexing.PixelTrackFitting.pixelFitterByHelixProjections_cfi import *
+from RecoPixelVertexing.PixelTrackFitting.pixelFitterByConformalMappingAndLine_cfi import *
 from RecoHI.HiTracking.HIPixelTrackFilter_cff import *
 from RecoHI.HiTracking.HITrackingRegionProducer_cfi import *
 
@@ -49,7 +49,7 @@ hiLowPtTripletStepTrackingRegions = _globalTrackingRegionWithVertices.clone(Regi
     sigmaZVertex = 4.0,
     fixedError = 0.2,
     VertexCollection = "hiSelectedPixelVertex",
-    ptMin = 0.4,
+    ptMin = 0.3, #same as quad step
     useFoundVertices = True,
     originRadius = 0.02
 ))
@@ -89,8 +89,13 @@ hiLowPtTripletStepPixelTracksFilter = hiFilter.clone(
     nSigmaLipMaxTolerance = 4.0,
     nSigmaTipMaxTolerance = 4.0,
     lipMax = 0,
-    ptMin = 0.4,
+    ptMin = 0.1,
 )
+
+hiTripletPixelFitterByConformalMappingAndLine = pixelFitterByConformalMappingAndLine.clone(
+    TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets')
+)
+
 hiLowPtTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 
     passLabel  = cms.string('Pixel primary tracks with vertex constraint'),
@@ -99,7 +104,7 @@ hiLowPtTripletStepPixelTracks = cms.EDProducer("PixelTrackProducer",
     SeedingHitSets = cms.InputTag("hiLowPtTripletStepTracksHitTriplets"),
 	
     # Fitter
-    Fitter = cms.InputTag("pixelFitterByHelixProjections"),
+    Fitter = cms.InputTag("hiTripletPixelFitterByConformalMappingAndLine"),
 	
     # Filter
     Filter = cms.InputTag("hiLowPtTripletStepPixelTracksFilter"),
@@ -123,7 +128,7 @@ hiLowPtTripletStepSeeds = RecoPixelVertexing.PixelLowPtUtilities.TrackSeeds_cfi.
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiLowPtTripletStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     maxLostHits = 1,
-    minimumNumberOfHits = 6,
+    minimumNumberOfHits = 4,
     minPt = 0.4
     )
 
@@ -201,6 +206,7 @@ trackingPhase1.toModify(hiLowPtTripletStepSelector, useAnyMVA = cms.bool(False))
 trackingPhase1.toModify(hiLowPtTripletStepSelector, trackSelectors= cms.VPSet(
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiLooseMTS.clone(
     name = 'hiLowPtTripletStepLoose',
+    min_nhits = cms.uint32(3),
     useMVA = cms.bool(False)
     ), #end of pset
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiTightMTS.clone(
@@ -236,7 +242,7 @@ hiLowPtTripletStep = cms.Sequence(hiLowPtTripletStepClusters*
                                         hiLowPtTripletStepTrackingRegions*
                                         hiLowPtTripletStepTracksHitDoublets*
                                         hiLowPtTripletStepTracksHitTriplets*
-                                        pixelFitterByHelixProjections*
+                                        hiTripletPixelFitterByConformalMappingAndLine*
                                         hiLowPtTripletStepPixelTracksFilter*
                                         hiLowPtTripletStepPixelTracks*hiLowPtTripletStepSeeds*
                                         hiLowPtTripletStepTrackCandidates*

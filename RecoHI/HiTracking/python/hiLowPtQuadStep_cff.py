@@ -33,7 +33,7 @@ from RecoPixelVertexing.PixelTriplets.pixelTripletHLTEDProducer_cfi import pixel
 from RecoPixelVertexing.PixelTriplets.pixelQuadrupletEDProducer_cfi import pixelQuadrupletEDProducer as _pixelQuadrupletEDProducer
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import *
 from RecoPixelVertexing.PixelLowPtUtilities.trackCleaner_cfi import *
-from RecoPixelVertexing.PixelTrackFitting.pixelFitterByHelixProjections_cfi import *
+from RecoPixelVertexing.PixelTrackFitting.pixelFitterByConformalMappingAndLine_cfi import *
 from RecoHI.HiTracking.HIPixelTrackFilter_cff import *
 from RecoHI.HiTracking.HITrackingRegionProducer_cfi import *
 
@@ -42,7 +42,7 @@ hiLowPtQuadStepTrackingRegions = _globalTrackingRegionWithVertices.clone(RegionP
     useMultipleScattering = False,
     useFakeVertices       = False,
     beamSpot = "offlineBeamSpot",
-    useFixedError = True,
+    useFixedError = False,
     nSigmaZ = 4.0,
     sigmaZVertex = 4.0,
     fixedError = 0.5,
@@ -82,8 +82,13 @@ hiLowPtQuadStepPixelTracksFilter = hiFilter.clone(
     nSigmaTipMaxTolerance = 0,
     lipMax = 1.0,
     tipMax = 1.0,
-    ptMin = 0.4, #seeding region is 0.3
+    ptMin = 0.1, #seeding region is 0.3
 )
+
+hiQuadPixelFitterByConformalMappingAndLine = pixelFitterByConformalMappingAndLine.clone(
+    TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets')
+)
+
 hiLowPtQuadStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 
     passLabel  = cms.string('Pixel detached tracks with vertex constraint'),
@@ -92,7 +97,7 @@ hiLowPtQuadStepPixelTracks = cms.EDProducer("PixelTrackProducer",
     SeedingHitSets = cms.InputTag("hiLowPtQuadStepTracksHitQuadrupletsCA"),
 	
     # Fitter
-    Fitter = cms.InputTag("pixelFitterByHelixProjections"),
+    Fitter = cms.InputTag("hiQuadPixelFitterByConformalMappingAndLine"),
 	
     # Filter
     Filter = cms.InputTag("hiLowPtQuadStepPixelTracksFilter"),
@@ -111,8 +116,8 @@ hiLowPtQuadStepSeeds = RecoPixelVertexing.PixelLowPtUtilities.TrackSeeds_cfi.pix
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
 hiLowPtQuadStepTrajectoryFilter = TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff.CkfBaseTrajectoryFilter_block.clone(
     #maxLostHits = 1,
-    minimumNumberOfHits = 3,#3 for pp
-    minPt = cms.double(0.075),# 0.075 for pp
+    minimumNumberOfHits = 4,#3 for pp
+    minPt = cms.double(0.3),# 0.075 for pp
     #constantValueForLostHitsFractionFilter = cms.double(0.701)
     )
 
@@ -200,6 +205,7 @@ trackingPhase1.toModify(hiLowPtQuadStepSelector, trackSelectors= cms.VPSet(
     name = 'hiLowPtQuadStepLoose',
     applyAdaptedPVCuts = cms.bool(False),
     useMVA = cms.bool(False),
+    min_nhits = cms.uint32(4)
     ), #end of pset
     RecoHI.HiTracking.hiMultiTrackSelector_cfi.hiTightMTS.clone(
     name = 'hiLowPtQuadStepTight',
@@ -233,7 +239,7 @@ hiLowPtQuadStep = cms.Sequence(hiLowPtQuadStepClusters*
                                      hiLowPtQuadStepTrackingRegions*
                                      hiLowPtQuadStepTracksHitDoubletsCA* 
                                      hiLowPtQuadStepTracksHitQuadrupletsCA* 
-				     pixelFitterByHelixProjections*
+				     hiQuadPixelFitterByConformalMappingAndLine*
                                      hiLowPtQuadStepPixelTracksFilter*
                                      hiLowPtQuadStepPixelTracks*
                                      hiLowPtQuadStepSeeds*

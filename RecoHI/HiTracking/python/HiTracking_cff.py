@@ -1,6 +1,6 @@
 from RecoHI.HiTracking.hiMergedConformalPixelTracking_cff import *
 from RecoHI.HiTracking.HIInitialJetCoreClusterSplitting_cff import *
-from RecoHI.HiTracking.LowPtTracking_PbPb_cff import *
+from RecoHI.HiTracking.HighPtTracking_PbPb_cff import *
 from RecoHI.HiTracking.hiLowPtTripletStep_cff import *
 from RecoHI.HiTracking.hiMixedTripletStep_cff import *
 from RecoHI.HiTracking.hiPixelPairStep_cff import *
