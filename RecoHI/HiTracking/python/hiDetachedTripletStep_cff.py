@@ -50,11 +50,11 @@ hiDetachedTripletStepTrackingRegions = _globalTrackingRegionWithVertices.clone(R
     useFixedError = True,
     nSigmaZ = 4.0,
     sigmaZVertex = 4.0,
-    fixedError = 0.5,
+    fixedError = 0.05,
     VertexCollection = "hiSelectedPixelVertex",
     ptMin = 0.9,
     useFoundVertices = True,
-    originRadius = 0.5
+    originRadius = 0.05
 ))
 hiDetachedTripletStepTracksHitDoublets = _hitPairEDProducer.clone(
     clusterCheck = "",

@@ -86,10 +86,10 @@ hiLowPtTripletStepTracksHitTripletsCA = _caHitTripletEDProducer.clone(
 )
 
 hiLowPtTripletStepPixelTracksFilter = hiFilter.clone(
-    nSigmaLipMaxTolerance = 4.0,
-    nSigmaTipMaxTolerance = 4.0,
+    nSigmaLipMaxTolerance = 4.5,
+    nSigmaTipMaxTolerance = 4.5,
     lipMax = 0,
-    ptMin = 0.1,
+    ptMin = 0.3,
 )
 
 hiTripletPixelFitterByConformalMappingAndLine = pixelFitterByConformalMappingAndLine.clone(

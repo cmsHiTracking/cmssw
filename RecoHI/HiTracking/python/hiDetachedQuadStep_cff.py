@@ -47,7 +47,7 @@ hiDetachedQuadStepTrackingRegions = _globalTrackingRegionWithVertices.clone(Regi
     sigmaZVertex = 4.0,
     fixedError = 0.5,
     VertexCollection = "hiSelectedPixelVertex",
-    ptMin = 0.9,# 0.3 for pp
+    ptMin = 0.5,# 0.3 for pp
     useFoundVertices = True,
     #originHalfLength = 15.0, # 15 for pp, useTrackingRegionWithVertices, does not have this parameter. Only with BeamSpot
     originRadius = 1.5 # 1.5 for pp
@@ -81,7 +81,7 @@ hiDetachedQuadStepPixelTracksFilter = hiFilter.clone(
     nSigmaTipMaxTolerance = 0,
     lipMax = 1.0,
     tipMax = 1.0,
-    ptMin = 0.95, #seeding region is 0.3
+    ptMin = 0.5, #seeding region is 0.3
 )
 hiDetachedQuadStepPixelTracks = cms.EDProducer("PixelTrackProducer",
 
