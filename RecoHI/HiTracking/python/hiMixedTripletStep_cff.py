@@ -25,29 +25,12 @@ hiMixedTripletStepClusters = cms.EDProducer("HITrackClusterRemover",
 # SEEDING LAYERS
 from RecoLocalTracker.SiStripClusterizer.SiStripClusterChargeCut_cfi import *
 from RecoTracker.IterativeTracking.DetachedTripletStep_cff import detachedTripletStepSeedLayers
-mixedTripletStepSeedLayersA.layerList = cms.vstring('BPix1+BPix2+BPix3', 
-        'BPix1+BPix2+FPix1_pos', 'BPix1+BPix2+FPix1_neg', 
-        'BPix1+FPix1_pos+FPix2_pos', 'BPix1+FPix1_neg+FPix2_neg', 
-        'BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg')
-mixedTripletStepSeedLayersA.BPix = cms.PSet(
-        TTRHBuilder = cms.string('WithTrackAngle'),
-        HitProducer = cms.string('siPixelRecHits'),
-        skipClusters = cms.InputTag('hiMixedTripletStepClusters')
-    )
-mixedTripletStepSeedLayersA.FPix = cms.PSet(
-        TTRHBuilder = cms.string('WithTrackAngle'),
-        HitProducer = cms.string('siPixelRecHits'),
-        skipClusters = cms.InputTag('hiMixedTripletStepClusters')
-    )
-mixedTripletStepSeedLayersA.TEC = cms.PSet(
-        matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
-        useRingSlector = cms.bool(True),
-        TTRHBuilder = cms.string('WithTrackAngle'), clusterChargeCut = cms.PSet(refToPSet_ = cms.string('SiStripClusterChargeCutTight')),
-        minRing = cms.int32(1),
-        maxRing = cms.int32(1),
-        skipClusters = cms.InputTag('hiMixedTripletStepClusters')
-    )
-
+mixedTripletStepSeedLayersA.layerList = cms.vstring('BPix1+BPix2+BPix3', 'BPix1+BPix2+FPix1_pos', 'BPix1+BPix2+FPix1_neg', 
+                                        'BPix1+FPix1_pos+FPix2_pos', 'BPix1+FPix1_neg+FPix2_neg', 
+                                        'BPix2+FPix1_pos+FPix2_pos', 'BPix2+FPix1_neg+FPix2_neg')
+mixedTripletStepSeedLayersA.BPix.skipClusters = cms.InputTag('hiMixedTripletStepClusters')
+mixedTripletStepSeedLayersA.FPix.skipClusters = cms.InputTag('hiMixedTripletStepClusters')
+mixedTripletStepSeedLayersA.TEC.skipClusters = cms.InputTag('hiMixedTripletStepClusters')
 
 # TrackingRegion
 from RecoTracker.TkTrackingRegions.globalTrackingRegionWithVertices_cfi import globalTrackingRegionWithVertices as _globalTrackingRegionWithVertices
@@ -80,28 +63,17 @@ from RecoPixelVertexing.PixelTrackFitting.pixelFitterByHelixProjections_cfi impo
 from RecoHI.HiTracking.HIPixelTrackFilter_cff import *
 from RecoHI.HiTracking.HITrackingRegionProducer_cfi import *
 
-
 # seeding
 from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import ClusterShapeHitFilterESProducer as _ClusterShapeHitFilterESProducer
 #mixedTripletStepClusterShapeHitFilter, no change
 mixedTripletStepHitDoubletsA.clusterCheck = ""
 mixedTripletStepHitDoubletsA.seedingLayers = "mixedTripletStepSeedLayersA"
 mixedTripletStepHitDoubletsA.trackingRegions = "hiMixedTripletStepTrackingRegionsA"
-#mixedTripletStepHitTripletsA, no change
-#mixedTripletStepSeedsA, no change
+
 
 # SEEDING LAYERS
-mixedTripletStepSeedLayersB.BPix = cms.PSet(
-        TTRHBuilder = cms.string('WithTrackAngle'),
-        HitProducer = cms.string('siPixelRecHits'),
-        skipClusters = cms.InputTag('hiMixedTripletStepClusters')
-    )
-mixedTripletStepSeedLayersB.TIB = cms.PSet(
-        matchedRecHits = cms.InputTag("siStripMatchedRecHits","matchedRecHit"),
-        TTRHBuilder = cms.string('WithTrackAngle'), clusterChargeCut = cms.PSet(refToPSet_ = cms.string('SiStripClusterChargeCutTight')),
-        skipClusters = cms.InputTag('hiMixedTripletStepClusters')
-    )
-
+mixedTripletStepSeedLayersB.BPix.skipClusters = cms.InputTag('hiMixedTripletStepClusters')
+mixedTripletStepSeedLayersB.TIB.skipClusters = cms.InputTag('hiMixedTripletStepClusters')
 
 hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(RegionPSet=dict(
      precise = True,
@@ -128,9 +100,6 @@ hiMixedTripletStepTrackingRegionsB = _globalTrackingRegionWithVertices.clone(Reg
 # seeding
 mixedTripletStepHitDoubletsB.clusterCheck = ""
 mixedTripletStepHitDoubletsB.trackingRegions = "hiMixedTripletStepTrackingRegionsB"
-#mixedTripletStepHitTripletsB, no change
-#mixedTripletStepSeedsB, no change
-
 
 # QUALITY CUTS DURING TRACK BUILDING
 import TrackingTools.TrajectoryFiltering.TrajectoryFilter_cff
@@ -140,16 +109,12 @@ _mixedTripletStepTrajectoryFilterBase.minPt = 0.4
 mixedTripletStepPropagator.ptMin = 0.4
 mixedTripletStepPropagatorOpposite.ptMin = 0.4
 # TRACK BUILDING
-#no change but name
 hiMixedTripletStepTracks = mixedTripletStepTracks.clone()
 
 # MAKING OF TRACK CANDIDATES
 import RecoTracker.CkfPattern.CkfTrackCandidates_cfi
 mixedTripletStepTrackCandidates.clustersToSkip = cms.InputTag('hiMixedTripletStepClusters')
-
-
 # TRACK FITTING
-#no change
 
 # Final selection
 import RecoHI.HiTracking.hiMultiTrackSelector_cfi
